@@ -53,11 +53,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <WebView
-                android:id="@+id/neteasy_desc_webview"
+            <org.sufficientlysecure.htmltextview.HtmlTextView
+                android:id="@+id/neteasy_html"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"/>
+                android:padding="12dp"
+                android:textAppearance="@android:style/TextAppearance.Medium" />
 
             <com.hwy.ui.widget.LoadView
                 android:id="@+id/neteasy_desc_loadview"
