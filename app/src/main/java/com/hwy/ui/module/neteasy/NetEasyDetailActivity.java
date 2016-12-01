@@ -24,6 +24,8 @@ import com.hwy.ui.widget.AppBarStateChangeListener;
 import com.hwy.ui.widget.LoadView;
 import com.hwy.ui.widget.ReloadListener;
 
+import org.sufficientlysecure.htmltextview.HtmlTextView;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -67,6 +69,9 @@ public class NetEasyDetailActivity extends BaseActivity implements INetEasyDetai
 
     @BindView(R.id.neteasy_desc_appbar)
     AppBarLayout mAppBarLayout;
+
+    @BindView(R.id.neteasy_html)
+    HtmlTextView mHtmlTextView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -143,7 +148,7 @@ public class NetEasyDetailActivity extends BaseActivity implements INetEasyDetai
     @Override
     public void showContent(NetEasyNewsDetailResp detailResp) {
         mLoadView.setLoadSuccessMode();
-
+        mHtmlTextView.setHtmlFromString(detailResp.body, new HtmlTextView.LocalImageGetter());
     }
 
     public static void geNetEasyDetail(Activity activity, NetEasyNewsItem item, View cover){
