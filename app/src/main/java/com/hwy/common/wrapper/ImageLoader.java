@@ -1,12 +1,11 @@
 package com.hwy.common.wrapper;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.hwy.R;
-
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * 功能描述：
@@ -19,18 +18,28 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 public class ImageLoader {
 
-    /**
-     * Load image from source and set it into the imageView.
-     * @param context context.
-     * @param source could be Uri/String/File/ResourceId.
-     * @param view the imageView.
-     */
     public static void load(Context context, Object source, ImageView view) {
         Glide.with(context)
                 .load(source)
                 .centerCrop()
                 .into(view);
     }
+
+
+    public static void load(Fragment fragment, Object source, ImageView imageView){
+        Glide.with(fragment)
+                .load(source)
+                .centerCrop()
+                .into(imageView);
+    }
+
+    public static void load(Activity activity,Object source,ImageView imageView){
+        Glide.with(activity)
+                .load(source)
+                .centerCrop()
+                .into(imageView);
+    }
+
 
     public static void load(Object source, ImageView view) {
         Glide.with(view.getContext())
@@ -39,19 +48,7 @@ public class ImageLoader {
                 .into(view);
     }
 
-    public static void loadWithCircle(Context context, Object source, ImageView view) {
-        Glide.with(context)
-                .load(source)
-                .bitmapTransform(new CropCircleTransformation(context))
-                .placeholder(R.drawable.zhihu)
-                .into(view);
-    }
 
-    public static void loadWithCircle(Object source, ImageView view) {
-        Glide.with(view.getContext())
-                .load(source)
-                .bitmapTransform(new CropCircleTransformation(view.getContext()))
-                .into(view);
-    }
+
 
 }

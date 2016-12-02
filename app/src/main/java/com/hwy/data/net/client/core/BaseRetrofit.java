@@ -18,10 +18,7 @@ public abstract class BaseRetrofit {
 
     public Retrofit get(){
         Retrofit.Builder builder = new Retrofit.Builder();
-        builder.baseUrl(getApiEndpoint().getEndpoint())
-//                .addConverterFactory(GsonConverterFactory.create())
-//                //retrofit对于解析器是由添加的顺序分别试用的，解析成功就直接返回，失败则调用下一个解析器。
-//                .addConverterFactory(StringConvertterFactory.create())
+        builder.baseUrl(getBaseUrl())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(getOkHttpClient());
         builder = customer(builder);
@@ -30,7 +27,7 @@ public abstract class BaseRetrofit {
 
     public abstract Retrofit.Builder customer(Retrofit.Builder builder);
 
-    public abstract ApiEndpoint getApiEndpoint();
+    public abstract String getBaseUrl();
     public abstract OkHttpClient getOkHttpClient();
 
 }

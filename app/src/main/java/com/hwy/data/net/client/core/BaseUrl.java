@@ -9,6 +9,6 @@ package com.hwy.data.net.client.core;
  * 修改备注：
  */
 
-public interface ApiEndpoint {
+public interface BaseUrl {
     String getEndpoint();
 }

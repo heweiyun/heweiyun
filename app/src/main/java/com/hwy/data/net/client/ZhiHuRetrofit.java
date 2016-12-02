@@ -1,6 +1,5 @@
 package com.hwy.data.net.client;
 
-import com.hwy.data.net.client.core.ApiEndpoint;
 import com.hwy.data.net.client.core.BaseRetrofit;
 
 import javax.inject.Inject;
@@ -30,13 +29,8 @@ public class ZhiHuRetrofit extends BaseRetrofit{
     }
 
     @Override
-    public ApiEndpoint getApiEndpoint() {
-        return new ApiEndpoint() {
-            @Override
-            public String getEndpoint() {
-                return "http://news-at.zhihu.com";
-            }
-        };
+    public String getBaseUrl() {
+        return "http://news-at.zhihu.com";
     }
 
     @Override
