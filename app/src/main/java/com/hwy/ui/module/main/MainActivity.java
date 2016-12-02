@@ -7,38 +7,70 @@ import android.support.v4.app.FragmentManager;
 
 import com.hwy.HwyApplication;
 import com.hwy.R;
-import com.hwy.di.GetComponent;
 import com.hwy.di.component.DaggerMainComponent;
 import com.hwy.di.component.MainComponent;
 import com.hwy.di.module.ActivityModule;
+import com.hwy.present.neteasy.NetEasyDetailPresent;
 import com.hwy.ui.base.BaseActivity;
 import com.hwy.ui.module.neteasy.NetEasyFragment;
 import com.hwy.ui.module.zhihu.ZhiHuFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 
-public class MainActivity extends BaseActivity implements GetComponent<MainComponent> {
+import javax.inject.Inject;
+
+public class MainActivity extends BaseActivity<MainComponent>{
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private BottomBar mBottomBar;
+
+    @Inject
+    NetEasyDetailPresent mNetEasyDetailPresent;
 
 
     private FragmentManager mFragmentManager = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         mBottomBar = BottomBar.attach(this,savedInstanceState);
+//        mBottomBar.setItems(R.menu.main_bottom_menu);
+//        mBottomBar.setOnMenuTabClickListener(mTabClickListener);
+        super.onCreate(savedInstanceState);
+    }
 
-        initViews();
+    @Override
+    protected int getContentResId() {
+        return R.layout.activity_main;
+    }
 
+    @Override
+    protected void injectDagger() {
 
     }
 
-    private void initViews(){
+    protected void initViews(){
         mBottomBar.setItems(R.menu.main_bottom_menu);
         mBottomBar.setOnMenuTabClickListener(mTabClickListener);
+    }
+
+    @Override
+    protected void initDatas() {
+
+    }
+
+    @Override
+    protected void initEvents() {
+
+    }
+
+    @Override
+    protected void attatchPresent() {
+
+    }
+
+    @Override
+    protected void detachPresent() {
+
     }
 
     private OnMenuTabClickListener mTabClickListener = new OnMenuTabClickListener() {
