@@ -38,6 +38,7 @@ captures/
 # Keystore files
 *.jks
 
+
 # =========================
 # Operating System Files
 # =========================
@@ -88,3 +89,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+.idea/
+
+.idea/misc.xml
+.idea/misc.xml
+.idea/misc.xml

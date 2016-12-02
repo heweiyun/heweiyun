@@ -37,7 +37,7 @@ public class ZhiHuDescriblePresent extends BasePresent<IZhiHuDescribleView> {
                 .doOnSubscribe(new Action0() {
                     @Override
                     public void call() {
-                        mView.showLoadingContent();
+                        mView.onLoading();
                     }
                 })
                 .subscribe(new ResponseObserver<ZhihuStory>() {
@@ -45,12 +45,12 @@ public class ZhiHuDescriblePresent extends BasePresent<IZhiHuDescribleView> {
 
                     @Override
                     public void onSuccess(ZhihuStory zhihuStory) {
-                        mView.showContent(zhihuStory);
+                        mView.onLoadSuccess(zhihuStory);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        mView.showLoadContentError();
+                        mView.onLoadError();
                     }
                 }));
     }

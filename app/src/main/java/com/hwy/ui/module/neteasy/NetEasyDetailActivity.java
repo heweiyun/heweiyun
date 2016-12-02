@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -16,8 +14,8 @@ import com.hwy.R;
 import com.hwy.common.wrapper.ImageLoader;
 import com.hwy.data.model.NetEasyNewsItem;
 import com.hwy.data.net.response.NetEasyNewsDetailResp;
-import com.hwy.di.component.DaggerMainComponent;
-import com.hwy.di.module.ActivityModule;
+import com.hwy.di.component.DaggerNetEasyDetailComponent;
+import com.hwy.di.component.NetEasyDetailComponent;
 import com.hwy.present.neteasy.NetEasyDetailPresent;
 import com.hwy.ui.base.BaseActivity;
 import com.hwy.ui.widget.AppBarStateChangeListener;
@@ -29,7 +27,6 @@ import org.sufficientlysecure.htmltextview.HtmlTextView;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 功能描述：
@@ -40,7 +37,7 @@ import butterknife.ButterKnife;
  * 修改备注：
  */
 
-public class NetEasyDetailActivity extends BaseActivity implements INetEasyDetailView {
+public class NetEasyDetailActivity extends BaseActivity<NetEasyDetailComponent> implements INetEasyDetailView {
     private static final String TAG = NetEasyDetailActivity.class.getSimpleName();
 
     private static final String INTENT_DATA_ID = "intent_data_id";
@@ -73,38 +70,24 @@ public class NetEasyDetailActivity extends BaseActivity implements INetEasyDetai
     @BindView(R.id.neteasy_html)
     HtmlTextView mHtmlTextView;
 
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_neteasy_desc);
-        ButterKnife.bind(this);
-        DaggerMainComponent.builder().applicationComponent(HwyApplication.get(this).getApplicationComponent())
-                .activityModule(new ActivityModule(this)).build().inject(this);
-        mNetEasyDetailPresent.attachView(this);
-        initView();
-        initData();
-        bindEvent();
+    protected int getContentResId() {
+        return R.layout.activity_neteasy_desc;
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mNetEasyDetailPresent.detachView();
+    protected void injectDagger() {
+        getComponent().inject(this);
     }
 
 
     @Override
-    public void onBackPressed() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mIsCoverVisiable) {
-            finishAfterTransition();
-        } else {
-            finish();
-        }
+    protected void initViews() {
     }
 
-    private void initView(){}
-
-    private void initData(){
+    @Override
+    protected void initDatas() {
         mId = getIntent().getStringExtra(INTENT_DATA_ID);
         mTitle = getIntent().getStringExtra(INTENT_DATA_TITLE);
         mImageUrl = getIntent().getStringExtra(INTENT_DATA_IMAGE);
@@ -115,7 +98,8 @@ public class NetEasyDetailActivity extends BaseActivity implements INetEasyDetai
         setSupportActionBar(mToolbar);
     }
 
-    private void bindEvent(){
+    @Override
+    protected void initEvents() {
         mLoadView.setReloadListener(new ReloadListener() {
             @Override
             public void reload() {
@@ -136,19 +120,47 @@ public class NetEasyDetailActivity extends BaseActivity implements INetEasyDetai
     }
 
     @Override
-    public void showLoadingContent() {
+    protected void attatchPresent() {
+        mNetEasyDetailPresent.attachView(this);
+    }
+
+    @Override
+    protected void detachPresent() {
+        mNetEasyDetailPresent.detachView();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mIsCoverVisiable) {
+            finishAfterTransition();
+        } else {
+            finish();
+        }
+    }
+
+
+
+
+    @Override
+    public void onLoading() {
         mLoadView.setLoadingMode();
     }
 
     @Override
-    public void showLoadContentError() {
+    public void onLoadError() {
         mLoadView.setLoadFailedMode();
     }
 
     @Override
-    public void showContent(NetEasyNewsDetailResp detailResp) {
+    public void onLoadSuccess(NetEasyNewsDetailResp detailResp) {
         mLoadView.setLoadSuccessMode();
         mHtmlTextView.setHtmlFromString(detailResp.body, new HtmlTextView.LocalImageGetter());
+    }
+
+    @Override
+    public void onLoadEmpty() {
+
     }
 
     public static void geNetEasyDetail(Activity activity, NetEasyNewsItem item, View cover){
@@ -166,4 +178,11 @@ public class NetEasyDetailActivity extends BaseActivity implements INetEasyDetai
         }
     }
 
+    @Override
+    public NetEasyDetailComponent getComponent() {
+        return DaggerNetEasyDetailComponent
+                .builder()
+                .applicationComponent(HwyApplication.get(this).getApplicationComponent())
+                .build();
+    }
 }

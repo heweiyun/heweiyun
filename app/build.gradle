@@ -80,7 +80,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3.1'
 
     // https://github.com/roughike/BottomBar
-    compile 'com.roughike:bottom-bar:1.4.0.1'
+    compile 'com.roughike:bottom-bar:2.0.2'
+
 
     // recycler view divider
     // https://github.com/yqritc/RecyclerView-FlexibleDivider

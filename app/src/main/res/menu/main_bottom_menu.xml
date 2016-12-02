@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/main_bottom_zhihu"
-        android:icon="@drawable/zhihu"
-        android:title="@string/main_tab_zhihu"></item>
-    <item android:id="@+id/main_bottom_neteasy"
-        android:icon="@drawable/wangyi"
-        android:title="@string/main_tab_neteasy"></item>
-</menu>
