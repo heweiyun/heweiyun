@@ -1,7 +1,7 @@
 package com.hwy.ui.module.neteasy;
 
 import com.hwy.data.model.NetEasyNewsItem;
-import com.hwy.ui.base.IBaseView;
+import com.hwy.ui.base.IShowPageContentView;
 
 import java.util.List;
 
@@ -14,43 +14,6 @@ import java.util.List;
  * 修改备注：
  */
 
-public interface INetEasyView extends IBaseView{
+public interface INetEasyView extends IShowPageContentView<List<NetEasyNewsItem>>{
 
-    /**
-     *显示加载第一页中
-     */
-    void showLoadingContent();
-
-
-    /**
-     *显示加载第一页的错误信息
-     */
-    void showLoadContentError();
-
-    /**
-     *显示加载更多是错误信息
-     */
-    void showLoadingMoreError();
-
-    /**
-     * 显示第一页加载的内容
-     * @param dataList
-     */
-    void showContent(List<NetEasyNewsItem> dataList);
-
-    /**
-     * 显示加载更多的内容
-     * @param dataList
-     */
-    void showMoreContent(List<NetEasyNewsItem> dataList);
-
-    /**
-     * 显示没有更多
-     */
-    void showLoadNomore();
-
-    /**
-     *显示第一页为空
-     */
-    void showContentEmpty();
 }

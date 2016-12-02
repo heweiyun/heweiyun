@@ -33,7 +33,6 @@ import java.lang.reflect.InvocationTargetException;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 功能描述：
@@ -140,8 +139,6 @@ public class ZhiHuDescribleActivity extends BaseActivity<ZhiHuDescribleComponent
 
     @Override
     protected void initViews() {
-        ButterKnife.bind(this);
-
         WebSettings settings = mWebView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
@@ -214,17 +211,17 @@ public class ZhiHuDescribleActivity extends BaseActivity<ZhiHuDescribleComponent
     }
 
     @Override
-    public void showLoadingContent() {
+    public void onLoading() {
         mLoadView.setLoadingMode();
     }
 
     @Override
-    public void showLoadContentError() {
+    public void onLoadError() {
         mLoadView.setLoadFailedMode();
     }
 
     @Override
-    public void showContent(ZhihuStory story) {
+    public void onLoadSuccess(ZhihuStory story) {
         mLoadView.setLoadSuccessMode();
         mWebView.setVisibility(View.VISIBLE);
         if (TextUtils.isEmpty(story.body)) {
@@ -233,6 +230,11 @@ public class ZhiHuDescribleActivity extends BaseActivity<ZhiHuDescribleComponent
             String data = WebUtil.buildHtmlWithCss(story.body, story.css, false);
             mWebView.loadDataWithBaseURL(WebUtil.BASE_URL, data, WebUtil.MIME_TYPE, WebUtil.ENCODING, WebUtil.FAIL_URL);
         }
+    }
+
+    @Override
+    public void onLoadEmpty() {
+
     }
 
     @Override

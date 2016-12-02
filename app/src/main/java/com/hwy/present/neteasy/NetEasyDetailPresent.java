@@ -50,19 +50,19 @@ public class NetEasyDetailPresent extends BasePresent<INetEasyDetailView> {
                 .doOnSubscribe(new Action0() {
                     @Override
                     public void call() {
-                        mView.showLoadingContent();
+                        mView.onLoading();
                     }
                 })
                 .subscribe(new ResponseObserver<NetEasyNewsDetailResp>() {
                     @Override
                     public void onSuccess(NetEasyNewsDetailResp netEasyNewsDetailResp) {
-                        mView.showContent(netEasyNewsDetailResp);
+                        mView.onLoadSuccess(netEasyNewsDetailResp);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         LogUtil.e(TAG,e);
-                        mView.showLoadContentError();
+                        mView.onLoadError();
                     }
                 }));
     }

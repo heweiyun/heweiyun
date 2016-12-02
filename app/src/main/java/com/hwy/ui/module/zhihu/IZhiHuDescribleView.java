@@ -1,7 +1,7 @@
 package com.hwy.ui.module.zhihu;
 
 import com.hwy.data.model.ZhihuStory;
-import com.hwy.ui.base.IBaseView;
+import com.hwy.ui.base.IShowContentView;
 
 /**
  * 功能描述：
@@ -12,15 +12,7 @@ import com.hwy.ui.base.IBaseView;
  * 修改备注：
  */
 
-public interface IZhiHuDescribleView extends IBaseView{
-
-    void showLoadingContent();
-
-    void showLoadContentError();
-
-    void showContent(ZhihuStory story);
-
-
+public interface IZhiHuDescribleView extends IShowContentView<ZhihuStory>{
 
 
 }

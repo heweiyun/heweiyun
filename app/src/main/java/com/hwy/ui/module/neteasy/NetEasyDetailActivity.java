@@ -27,7 +27,6 @@ import org.sufficientlysecure.htmltextview.HtmlTextView;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 功能描述：
@@ -85,7 +84,6 @@ public class NetEasyDetailActivity extends BaseActivity<NetEasyDetailComponent> 
 
     @Override
     protected void initViews() {
-        ButterKnife.bind(this);
     }
 
     @Override
@@ -145,19 +143,24 @@ public class NetEasyDetailActivity extends BaseActivity<NetEasyDetailComponent> 
 
 
     @Override
-    public void showLoadingContent() {
+    public void onLoading() {
         mLoadView.setLoadingMode();
     }
 
     @Override
-    public void showLoadContentError() {
+    public void onLoadError() {
         mLoadView.setLoadFailedMode();
     }
 
     @Override
-    public void showContent(NetEasyNewsDetailResp detailResp) {
+    public void onLoadSuccess(NetEasyNewsDetailResp detailResp) {
         mLoadView.setLoadSuccessMode();
         mHtmlTextView.setHtmlFromString(detailResp.body, new HtmlTextView.LocalImageGetter());
+    }
+
+    @Override
+    public void onLoadEmpty() {
+
     }
 
     public static void geNetEasyDetail(Activity activity, NetEasyNewsItem item, View cover){

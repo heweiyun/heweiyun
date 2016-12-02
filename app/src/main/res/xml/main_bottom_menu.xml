@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab id="@+id/main_bottom_zhihu"
+        icon="@drawable/zhihu"
+        title="@string/main_tab_zhihu"></tab>
+    <tab id="@+id/main_bottom_neteasy"
+        icon="@drawable/wangyi"
+        title="@string/main_tab_neteasy"></tab>
+</tabs>

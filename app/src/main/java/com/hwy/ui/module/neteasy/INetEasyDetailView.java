@@ -1,7 +1,7 @@
 package com.hwy.ui.module.neteasy;
 
 import com.hwy.data.net.response.NetEasyNewsDetailResp;
-import com.hwy.ui.base.IBaseView;
+import com.hwy.ui.base.IShowContentView;
 
 /**
  * 功能描述：
@@ -12,10 +12,6 @@ import com.hwy.ui.base.IBaseView;
  * 修改备注：
  */
 
-public interface INetEasyDetailView extends IBaseView {
-    void showLoadingContent();
+public interface INetEasyDetailView extends IShowContentView<NetEasyNewsDetailResp> {
 
-    void showLoadContentError();
-
-    void showContent(NetEasyNewsDetailResp detailResp);
 }

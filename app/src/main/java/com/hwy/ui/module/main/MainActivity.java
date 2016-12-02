@@ -1,6 +1,5 @@
 package com.hwy.ui.module.main;
 
-import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,14 +14,17 @@ import com.hwy.ui.base.BaseActivity;
 import com.hwy.ui.module.neteasy.NetEasyFragment;
 import com.hwy.ui.module.zhihu.ZhiHuFragment;
 import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnMenuTabClickListener;
+import com.roughike.bottombar.OnTabSelectListener;
 
 import javax.inject.Inject;
+
+import butterknife.BindView;
 
 public class MainActivity extends BaseActivity<MainComponent>{
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private BottomBar mBottomBar;
+    @BindView(R.id.main_bottombar)
+    BottomBar mBottomBar;
 
     @Inject
     NetEasyDetailPresent mNetEasyDetailPresent;
@@ -30,13 +32,7 @@ public class MainActivity extends BaseActivity<MainComponent>{
 
     private FragmentManager mFragmentManager = getSupportFragmentManager();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        mBottomBar = BottomBar.attach(this,savedInstanceState);
-//        mBottomBar.setItems(R.menu.main_bottom_menu);
-//        mBottomBar.setOnMenuTabClickListener(mTabClickListener);
-        super.onCreate(savedInstanceState);
-    }
+
 
     @Override
     protected int getContentResId() {
@@ -49,8 +45,7 @@ public class MainActivity extends BaseActivity<MainComponent>{
     }
 
     protected void initViews(){
-        mBottomBar.setItems(R.menu.main_bottom_menu);
-        mBottomBar.setOnMenuTabClickListener(mTabClickListener);
+
     }
 
     @Override
@@ -60,7 +55,12 @@ public class MainActivity extends BaseActivity<MainComponent>{
 
     @Override
     protected void initEvents() {
-
+        mBottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelected(@IdRes int tabId) {
+                switchMenu(getFragmentName(tabId));
+            }
+        });
     }
 
     @Override
@@ -73,17 +73,7 @@ public class MainActivity extends BaseActivity<MainComponent>{
 
     }
 
-    private OnMenuTabClickListener mTabClickListener = new OnMenuTabClickListener() {
-        @Override
-        public void onMenuTabSelected(@IdRes int menuItemId) {
-            switchMenu(getFragmentName(menuItemId));
-        }
 
-        @Override
-        public void onMenuTabReSelected(@IdRes int menuItemId) {
-
-        }
-    };
 
     private Fragment mCurrentFragment;
     private void switchMenu(String fragmentName){
@@ -107,11 +97,6 @@ public class MainActivity extends BaseActivity<MainComponent>{
 
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        mBottomBar.onSaveInstanceState(outState);
-        super.onSaveInstanceState(outState);
-    }
 
 
     private String getFragmentName(int menuId){

@@ -59,23 +59,23 @@ public class ZhiHuPresent extends BasePresent<IZhiHuView> {
                 .doOnSubscribe(new Action0() {
                     @Override
                     public void call() {
-                        mView.showLoadingContent();
+                        mView.onLoading();
                     }
                 })
                 .subscribe(new ResponseObserver<ZhihuDailyResp>() {
 
                     @Override
                     public void onError(Throwable e) {
-                        mView.showLoadContentError();
+                        mView.onLoadError();
                     }
 
                     @Override
                     public void onSuccess(ZhihuDailyResp resp) {
                         mCurDate = resp.date;
                         if (null == resp.stories || resp.stories.size() < 1){
-                            mView.showContentEmpty();
+                            mView.onLoadEmpty();
                         }else {
-                            mView.showContent(resp);
+                            mView.onLoadSuccess(resp);
                         }
                     }
                 }));
@@ -108,15 +108,15 @@ public class ZhiHuPresent extends BasePresent<IZhiHuView> {
                     public void onSuccess(ZhihuDailyResp resp) {
                         mCurDate = resp.date;
                         if (null == resp.stories || resp.stories.size() < 1){
-                            mView.showLoadNomore();
+                            mView.onLoadNomore();
                         }else {
-                            mView.showMoreContent(resp);
+                            mView.onLoadMore(resp);
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        mView.showLoadingMoreError();
+                        mView.onLoadMoreError();
                     }
                 }));
     }

@@ -53,7 +53,7 @@ public class NetEasyPresent extends BasePresent<INetEasyView> {
                     @Override
                     public void call() {
                         if (mPageIndex == 0){
-                            mView.showLoadingContent();
+                            mView.onLoading();
                         }
                     }
                 })
@@ -63,15 +63,15 @@ public class NetEasyPresent extends BasePresent<INetEasyView> {
                     public void onSuccess(List<NetEasyNewsItem> dataList) {
                         if (mPageIndex == 0){
                             if (null == dataList || dataList.size() < 1){
-                                mView.showContentEmpty();
+                                mView.onLoadEmpty();
                             }else {
-                                mView.showContent(dataList);
+                                mView.onLoadSuccess(dataList);
                             }
                         }else {
                             if (null == dataList || dataList.size() < 1){
-                                mView.showLoadNomore();
+                                mView.onLoadNomore();
                             }else {
-                                mView.showMoreContent(dataList);
+                                mView.onLoadMore(dataList);
                             }
                         }
                         mPageIndex += 20;
@@ -80,9 +80,9 @@ public class NetEasyPresent extends BasePresent<INetEasyView> {
                     @Override
                     public void onError(Throwable e) {
                         if (mPageIndex == 0){
-                            mView.showLoadContentError();
+                            mView.onLoadError();
                         }else {
-                            mView.showLoadingMoreError();
+                            mView.onLoadMoreError();
                         }
                     }
                 }));

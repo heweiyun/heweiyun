@@ -1,13 +1,10 @@
 package com.hwy.ui.module.zhihu;
 
 import android.graphics.Color;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
@@ -24,7 +21,6 @@ import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 功能描述：
@@ -49,64 +45,46 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuView{
 
     private ZhiHuAdapter mZhiHuAdapter;
 
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected int getContentResId() {
+        return R.layout.fragment_zhihu;
+    }
+
+    @Override
+    protected void injectDagger() {
         getComponent(MainComponent.class).inject(this);
-        mZhiHuPresent.attachView(this);
     }
+
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mZhiHuPresent.detachView();
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
-            savedInstanceState) {
-        View contentView = inflater.inflate(R.layout.fragment_zhihu,null);
-        ButterKnife.bind(this,contentView);
-        initViews();
-        return contentView;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mZhiHuPresent.getLatestZhiHuNews();
-    }
-
-    private void initViews(){
-        mZhiHuAdapter = new ZhiHuAdapter(null);
+    protected  void initViews(){
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
                 .color(Color.TRANSPARENT)
                 .size(10)
                 .build());
-        mRecyclerView.setAdapter(mZhiHuAdapter);
+    }
 
-        mLoadView.setReloadListener(new ReloadListener() {
-            @Override
-            public void reload() {
-                mZhiHuPresent.getLatestZhiHuNews();
-            }
-        });
-
+    @Override
+    protected void initDatas() {
+        mZhiHuAdapter = new ZhiHuAdapter(null);
         mZhiHuAdapter.setEnableLoadMore(true);
         mZhiHuAdapter.setAutoLoadMoreSize(2);
+        mZhiHuAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
+        mRecyclerView.setAdapter(mZhiHuAdapter);
+
+        mZhiHuPresent.getLatestZhiHuNews();
+    }
+
+    @Override
+    protected void initEvents() {
         mZhiHuAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 mZhiHuPresent.getTheDaily();
             }
         });
-
-
-        mZhiHuAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
-
-
         mRecyclerView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
@@ -114,44 +92,59 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuView{
                 ZhiHuDescribleActivity.goDescrible(getActivity(),zhihuDailyItem,view.findViewById(R.id.item_zhihu_imv_icon));
             }
         });
-
+        mLoadView.setReloadListener(new ReloadListener() {
+            @Override
+            public void reload() {
+                mZhiHuPresent.getLatestZhiHuNews();
+            }
+        });
     }
 
     @Override
-    public void showLoadingContent() {
+    protected void attatchPresent() {
+        mZhiHuPresent.attachView(this);
+    }
+
+    @Override
+    protected void detachPresent() {
+        mZhiHuPresent.detachView();
+    }
+
+    @Override
+    public void onLoading() {
         mLoadView.setLoadingMode();
     }
 
 
     @Override
-    public void showLoadContentError() {
+    public void onLoadError() {
         mLoadView.setLoadFailedMode();
     }
 
     @Override
-    public void showLoadingMoreError() {
+    public void onLoadMoreError() {
         mZhiHuAdapter.loadMoreFail();
     }
 
     @Override
-    public void showContent(ZhihuDailyResp resp) {
+    public void onLoadSuccess(ZhihuDailyResp resp) {
         mLoadView.setLoadSuccessMode();
         mZhiHuAdapter.addData(resp.stories);
     }
 
     @Override
-    public void showMoreContent(ZhihuDailyResp resp) {
+    public void onLoadMore(ZhihuDailyResp resp) {
         mZhiHuAdapter.loadMoreComplete();
         mZhiHuAdapter.addData(resp.stories);
     }
 
     @Override
-    public void showLoadNomore() {
+    public void onLoadNomore() {
         mZhiHuAdapter.loadMoreEnd();
     }
 
     @Override
-    public void showContentEmpty() {
+    public void onLoadEmpty() {
         mLoadView.setLoadSuccessMode();
         mZhiHuAdapter.setEmptyView(getEmptyView());
     }

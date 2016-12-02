@@ -1,13 +1,10 @@
 package com.hwy.ui.module.neteasy;
 
 import android.graphics.Color;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
@@ -25,7 +22,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 功能描述：
@@ -53,104 +49,102 @@ public class NetEasyFragment extends BaseFragment implements INetEasyView{
 
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected int getContentResId() {
+        return R.layout.fragment_neteasy;
+    }
+
+    @Override
+    protected void injectDagger() {
         getComponent(MainComponent.class).inject(this);
-        mNetEasyPresent.attachView(this);
     }
+
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mNetEasyPresent.detachView();
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
-            savedInstanceState) {
-        View contentView = inflater.inflate(R.layout.fragment_neteasy,null);
-        ButterKnife.bind(this,contentView);
-        initViews();
-        return contentView;
-    }
-
-    private void initViews(){
-        mNetEasyAdapter = new NetEasyAdapter(null);
-
+    protected void initViews(){
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
                 .color(Color.TRANSPARENT)
                 .size(10)
                 .build());
+    }
+
+    @Override
+    protected void initDatas() {
+        mNetEasyAdapter = new NetEasyAdapter(null);
+        mNetEasyAdapter.setEnableLoadMore(true);
+        mNetEasyAdapter.setAutoLoadMoreSize(2);
+        mNetEasyAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         mRecyclerView.setAdapter(mNetEasyAdapter);
 
+        mNetEasyPresent.getNetEasyList();
+    }
+
+    @Override
+    protected void initEvents() {
         mLoadView.setReloadListener(new ReloadListener() {
             @Override
             public void reload() {
                 mNetEasyPresent.getNetEasyList();
             }
         });
-
-        mNetEasyAdapter.setEnableLoadMore(true);
-        mNetEasyAdapter.setAutoLoadMoreSize(2);
-        mNetEasyAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                mNetEasyPresent.getNetEasyList();
-            }
-        });
-
-        mNetEasyAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
-
         mRecyclerView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                 NetEasyDetailActivity.geNetEasyDetail(getActivity(),(NetEasyNewsItem) baseQuickAdapter.getItem(i),view.findViewById(R.id.item_neteasy_imv_icon));
             }
         });
+        mNetEasyAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                mNetEasyPresent.getNetEasyList();
+            }
+        });
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mNetEasyPresent.getNetEasyList();
+    protected void attatchPresent() {
+        mNetEasyPresent.attachView(this);
     }
 
     @Override
-    public void showLoadingContent() {
+    protected void detachPresent() {
+        mNetEasyPresent.detachView();
+    }
+
+    @Override
+    public void onLoading() {
         mLoadView.setLoadingMode();
     }
 
     @Override
-    public void showLoadContentError() {
+    public void onLoadError() {
         mLoadView.setLoadFailedMode();
     }
 
     @Override
-    public void showLoadingMoreError() {
+    public void onLoadMoreError() {
         mNetEasyAdapter.loadMoreFail();
     }
 
     @Override
-    public void showContent(List<NetEasyNewsItem> dataList) {
+    public void onLoadSuccess(List<NetEasyNewsItem> dataList) {
         mLoadView.setLoadSuccessMode();
         mNetEasyAdapter.addData(dataList);
     }
 
     @Override
-    public void showMoreContent(List<NetEasyNewsItem> dataList) {
+    public void onLoadMore(List<NetEasyNewsItem> dataList) {
         mNetEasyAdapter.loadMoreComplete();
         mNetEasyAdapter.addData(dataList);
     }
 
     @Override
-    public void showLoadNomore() {
+    public void onLoadNomore() {
         mNetEasyAdapter.loadMoreEnd();
     }
 
     @Override
-    public void showContentEmpty() {
+    public void onLoadEmpty() {
         mLoadView.setLoadSuccessMode();
         mNetEasyAdapter.setEmptyView(getEmptyView());
     }

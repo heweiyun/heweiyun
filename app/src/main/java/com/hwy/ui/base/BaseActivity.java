@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.hwy.di.GetComponent;
 
+import butterknife.ButterKnife;
+
 /**
  * 功能描述：所有Activity的基类
  * 创建人：heweiyun
@@ -23,6 +25,7 @@ public abstract class BaseActivity<C>  extends AppCompatActivity implements GetC
         int contentResId = getContentResId();
         if (contentResId != 0){
             setContentView(getContentResId());
+            ButterKnife.bind(this);
         }
         injectDagger();
         attatchPresent();
