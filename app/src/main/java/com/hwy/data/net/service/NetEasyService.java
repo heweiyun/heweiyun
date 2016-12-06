@@ -3,6 +3,7 @@ package com.hwy.data.net.service;
 import com.hwy.data.net.response.NetEasyNewsListResp;
 
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import rx.Observable;
 
@@ -17,6 +18,7 @@ import rx.Observable;
 
 public interface NetEasyService {
 
+    @Headers("Cache-Control: public, max-age=3600")
     @GET("/nc/article/headline/T1348647909107/{id}-20.html")
     Observable<NetEasyNewsListResp> getNews(@Path("id") int id );
 

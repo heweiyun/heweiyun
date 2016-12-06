@@ -1,6 +1,7 @@
 package com.hwy.data.net.client;
 
 import com.hwy.data.net.client.core.BaseRetrofit;
+import com.hwy.data.net.client.core.CacheHttpClient;
 
 import javax.inject.Inject;
 
@@ -19,8 +20,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ZhiHuRetrofit extends BaseRetrofit{
 
+    private CacheHttpClient mCacheHttpClient;
+
     @Inject
-    public ZhiHuRetrofit(){}
+    public ZhiHuRetrofit(CacheHttpClient cacheHttpClient){
+        this.mCacheHttpClient = cacheHttpClient;
+    }
 
     @Override
     public Retrofit.Builder customer(Retrofit.Builder builder) {
@@ -35,6 +40,6 @@ public class ZhiHuRetrofit extends BaseRetrofit{
 
     @Override
     public OkHttpClient getOkHttpClient() {
-        return new SimpleOkHttpClient().get();
+        return mCacheHttpClient.get();
     }
 }

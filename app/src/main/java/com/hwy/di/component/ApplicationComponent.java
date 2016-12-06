@@ -3,6 +3,7 @@ package com.hwy.di.component;
 import android.app.Application;
 import android.content.Context;
 
+import com.alipay.euler.andfix.patch.PatchManager;
 import com.hwy.data.net.service.NetEasyDetailService;
 import com.hwy.data.net.service.NetEasyService;
 import com.hwy.data.net.service.ZhiHuService;
@@ -36,4 +37,6 @@ public interface ApplicationComponent {
     NetEasyService netEasyService();
 
     NetEasyDetailService netEasyDetailService();
+
+    PatchManager patchManager();
 }

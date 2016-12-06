@@ -3,6 +3,7 @@
 
     <string name="main_tab_zhihu"></string>
     <string name="main_tab_neteasy"></string>
+    <string name="main_tab_look"></string>
 
     <string name="load_more_loading">加载中</string>
     <string name="load_more_failed">加载失败</string>
@@ -10,4 +11,5 @@
     
     <string name="zhihu_cover_transition_name">ZhiHuCover</string>
     <string name="neteasy_cover_transition_name">NetEasyCover</string>
+
 </resources>

@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.hwy.di.PerActivity;
 import com.hwy.di.module.ActivityModule;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import dagger.Component;
 
@@ -20,4 +21,6 @@ import dagger.Component;
 public interface ActivityComponent {
 
     Activity activity();
+
+    RxPermissions rxPermissions();
 }

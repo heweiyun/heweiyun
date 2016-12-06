@@ -16,6 +16,7 @@ import com.hwy.present.zhihu.ZhiHuPresent;
 import com.hwy.ui.base.BaseFragment;
 import com.hwy.ui.widget.LoadView;
 import com.hwy.ui.widget.ReloadListener;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import javax.inject.Inject;
@@ -36,6 +37,9 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuView{
 
     @Inject
     ZhiHuPresent mZhiHuPresent;
+
+    @Inject
+    RxPermissions mRxPermissions;
 
     @BindView(R.id.zhihu_rv)
     RecyclerView mRecyclerView;

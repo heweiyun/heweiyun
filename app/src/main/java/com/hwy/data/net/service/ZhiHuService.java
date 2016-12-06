@@ -4,6 +4,7 @@ import com.hwy.data.model.ZhihuStory;
 import com.hwy.data.net.response.ZhihuDailyResp;
 
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import rx.Observable;
 
@@ -18,9 +19,11 @@ import rx.Observable;
 
 public interface ZhiHuService {
 
+    @Headers("Cache-Control: public, max-age=3600")
     @GET("/api/4/news/latest")
     Observable<ZhihuDailyResp> getLastDaily();
 
+    @Headers("Cache-Control: public, max-age=3600")
     @GET("/api/4/news/before/{date}")
     Observable<ZhihuDailyResp> getTheDaily(@Path("date") String date);
 

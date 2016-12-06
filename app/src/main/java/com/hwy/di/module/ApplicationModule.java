@@ -3,6 +3,8 @@ package com.hwy.di.module;
 import android.app.Application;
 import android.content.Context;
 
+import com.alipay.euler.andfix.patch.PatchManager;
+import com.hwy.common.util.AppUtil;
 import com.hwy.data.net.client.NetEasyStringRetrofit;
 import com.hwy.data.net.client.ZhiHuRetrofit;
 import com.hwy.data.net.client.NetEasyGsonRetrofit;
@@ -61,6 +63,16 @@ public class ApplicationModule {
     @Singleton
     NetEasyDetailService provideNetEasyDetailService(NetEasyStringRetrofit netEasyStringRetrofit){
         return netEasyStringRetrofit.get().create(NetEasyDetailService.class);
+    }
+
+    @Provides
+    @Singleton
+    PatchManager provoedPatchManager(){
+        PatchManager patchManager = new PatchManager(mApplication);
+        patchManager.init(AppUtil.getVersionName(mApplication));
+        //加载已经添加到PatchManager的patch
+        patchManager.loadPatch();
+        return patchManager;
     }
 
 }

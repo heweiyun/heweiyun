@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 
 import com.hwy.di.ActivityContext;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import dagger.Module;
 import dagger.Provides;
@@ -39,6 +40,11 @@ public class ActivityModule {
     @ActivityContext
     Context provideContext(){
         return mActivity;
+    }
+
+    @Provides
+    RxPermissions provideRxPermissions(){
+        return new RxPermissions(mActivity);
     }
 
 }
