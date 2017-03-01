@@ -1,11 +1,10 @@
 package com.hwy.data.net.client;
 
-import com.hwy.data.net.client.core.BaseRetrofit;
+import com.hwy.data.net.client.core.StringConvertRetrofit;
 
 import javax.inject.Inject;
 
 import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
 
 /**
  * 功能描述：
@@ -16,16 +15,11 @@ import retrofit2.Retrofit;
  * 修改备注：
  */
 
-public class NetEasyStringRetrofit extends BaseRetrofit {
+public class NetEasyStringRetrofit extends StringConvertRetrofit {
 
     @Inject
     public NetEasyStringRetrofit(){}
 
-    @Override
-    public Retrofit.Builder customer(Retrofit.Builder builder) {
-        builder.addConverterFactory(StringConvertterFactory.create());
-        return builder;
-    }
 
     @Override
     public String getBaseUrl() {

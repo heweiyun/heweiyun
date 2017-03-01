@@ -2,7 +2,6 @@ package com.hwy.di.component;
 
 import com.hwy.di.PerActivity;
 import com.hwy.di.module.ActivityModule;
-import com.hwy.ui.module.look.LookFragment;
 import com.hwy.ui.module.neteasy.NetEasyFragment;
 import com.hwy.ui.module.zhihu.ZhiHuFragment;
 
@@ -22,5 +21,4 @@ import dagger.Component;
 public interface MainComponent extends ActivityComponent{
     void inject(ZhiHuFragment zhiHuFragment);
     void inject(NetEasyFragment netEasyFragment);
-    void inject(LookFragment lookFragment);
 }

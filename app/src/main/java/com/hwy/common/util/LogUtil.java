@@ -2,10 +2,12 @@ package com.hwy.common.util;
 
 import android.annotation.SuppressLint;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.SparseArray;
 
 import com.hwy.BuildConfig;
+import com.hwy.HwyApplication;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -60,7 +62,7 @@ public class LogUtil {
     /**
      * 日志文件名称绝对路径
      */
-    private static final String LOGFILENAME = Environment.getExternalStorageDirectory().getPath() + "/log/klook" +
+    private static final String LOGFILENAME = HwyApplication.getApplication().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/log/log" +
             ".log";
 
     /**
@@ -191,7 +193,7 @@ public class LogUtil {
     private static String combineLogMsg(String... msg) {
         StringBuilder sb = new StringBuilder();
         sb.append("[Pid:").append(Thread.currentThread().getId()).append("]");
-        sb.append(getCaller()).append(": ");
+        sb.append(getCaller(3)).append(": ");
         if (null != msg) {
             for (String s : msg) {
                 sb.append(s);
@@ -201,10 +203,10 @@ public class LogUtil {
 
     }
 
-    private static String getCaller() {
+    private static String getCaller(int index) {
         StackTraceElement[] trace = new Throwable().fillInStackTrace().getStackTrace();
         String caller = "<unknown>";
-        for (int i = 3; i < trace.length; i++) {
+        for (int i = index; i < trace.length; i++) {
             Class<?> clazz = trace[i].getClass();
             if (!clazz.equals(LogUtil.class)) {
                 String callingClass = trace[i].getClassName();
@@ -259,44 +261,55 @@ public class LogUtil {
     @SuppressLint("SimpleDateFormat")
     private static void writeLogToFile(int degree, String tag, String msg, Throwable tr) {
         if (IS_NEED_FILELOG) {
-
             StringBuffer sb = new StringBuffer();
-
-            // 拼接时间、日志级别、标签、信息
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
             sb.append(df.format(Calendar.getInstance().getTime())).append(", <D>").append(degreeLabel.get(degree))
                     .append(", <T>")
                     .append(tag).append(", <M>").append(msg);
+            writeToFile(sb,tr);
+        }
+    }
 
-            // 如果有异常信息, 需要拼接异常信息, 拼接所有的堆栈信息
-            if (null != tr) {
-                StackTraceElement[] stacks = tr.getStackTrace();
-                if (null != stacks) {
-                    sb.append(", <E>").append(tr.getMessage()).append("\r\n");
-                    for (int i = 0; i < stacks.length; i++) {
-                        sb.append("\t\tat ").append(stacks[i].getClassName()).append(".").append(stacks[i]
-                                .getMethodName()).append("(")
-                                .append(stacks[i].getClassName()).append(".java").append(" ").append(stacks[i]
-                                .getLineNumber()).append(")")
-                                .append("\r\n");
-                    }
+    public static void logToFile(int degree, String tag, String msg, @Nullable Throwable tr){
+        StringBuffer sb = new StringBuffer();
+        sb.append("[Pid:").append(Thread.currentThread().getId()).append("]");
+        sb.append(getCaller(2)).append(": ");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        sb.append(df.format(Calendar.getInstance().getTime())).append(", <D>").append(degreeLabel.get(degree))
+                .append(", <T>")
+                .append(tag).append(", <M>").append(msg);
+        writeToFile(sb,tr);
+    }
+
+
+    private static void writeToFile(StringBuffer sb, @Nullable Throwable tr){
+        // 如果有异常信息, 需要拼接异常信息, 拼接所有的堆栈信息
+        if (null != tr) {
+            StackTraceElement[] stacks = tr.getStackTrace();
+            if (null != stacks) {
+                sb.append(", <E>").append(tr.getMessage()).append("\r\n");
+                for (int i = 0; i < stacks.length; i++) {
+                    sb.append("\t\tat ").append(stacks[i].getClassName()).append(".").append(stacks[i]
+                            .getMethodName()).append("(")
+                            .append(stacks[i].getClassName()).append(".java").append(" ").append(stacks[i]
+                            .getLineNumber()).append(")")
+                            .append("\r\n");
                 }
             }
+        }
 
-            // 将日志信息增加到队列中
-            Logs.add(sb.toString());
+        // 将日志信息增加到队列中
+        Logs.add(sb.toString());
 
-            // 通知日志线程写文件
-            synchronized (lock) {
-                lock.notify();
-            }
+        // 通知日志线程写文件
+        synchronized (lock) {
+            lock.notify();
+        }
 
-            // 如果日志线程没有初始化, 需要初始化并启动
-            if (null == logThread) {
-                logThread = new LogThread();
-                logThread.start();
-            }
-
+        // 如果日志线程没有初始化, 需要初始化并启动
+        if (null == logThread) {
+            logThread = new LogThread();
+            logThread.start();
         }
     }
 

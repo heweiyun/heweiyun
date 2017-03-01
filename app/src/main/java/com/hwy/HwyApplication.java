@@ -3,6 +3,7 @@ package com.hwy;
 import android.app.Application;
 import android.content.Context;
 
+import com.hwy.common.util.CrashHandler;
 import com.hwy.di.component.ApplicationComponent;
 import com.hwy.di.component.DaggerApplicationComponent;
 import com.hwy.di.module.ApplicationModule;
@@ -18,6 +19,18 @@ import com.hwy.di.module.ApplicationModule;
 
 public class HwyApplication extends Application {
     private ApplicationComponent mApplicationComponent;
+    private static HwyApplication mApplication;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        this.mApplication = this;
+        CrashHandler.getInstance().setCustomCrashHanler(this);
+    }
+
+    public static HwyApplication getApplication(){
+        return mApplication;
+    }
 
     public ApplicationComponent getApplicationComponent(){
         if (null == mApplicationComponent){

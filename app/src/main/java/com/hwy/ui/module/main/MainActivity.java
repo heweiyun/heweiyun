@@ -9,14 +9,11 @@ import com.hwy.R;
 import com.hwy.di.component.DaggerMainComponent;
 import com.hwy.di.component.MainComponent;
 import com.hwy.di.module.ActivityModule;
-import com.hwy.present.neteasy.NetEasyDetailPresent;
 import com.hwy.ui.base.BaseActivity;
 import com.hwy.ui.module.neteasy.NetEasyFragment;
 import com.hwy.ui.module.zhihu.ZhiHuFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 
@@ -26,13 +23,7 @@ public class MainActivity extends BaseActivity<MainComponent>{
     @BindView(R.id.main_bottombar)
     BottomBar mBottomBar;
 
-    @Inject
-    NetEasyDetailPresent mNetEasyDetailPresent;
-
-
     private FragmentManager mFragmentManager = getSupportFragmentManager();
-
-
 
     @Override
     protected int getContentResId() {

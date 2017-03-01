@@ -1,13 +1,11 @@
 package com.hwy.data.net.client;
 
-import com.hwy.data.net.client.core.BaseRetrofit;
 import com.hwy.data.net.client.core.CacheHttpClient;
+import com.hwy.data.net.client.core.GsonConvertRetrofit;
 
 import javax.inject.Inject;
 
 import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * 功能描述：
@@ -18,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * 修改备注：
  */
 
-public class ZhiHuRetrofit extends BaseRetrofit{
+public class ZhiHuRetrofit extends GsonConvertRetrofit{
 
     private CacheHttpClient mCacheHttpClient;
 
@@ -27,11 +25,6 @@ public class ZhiHuRetrofit extends BaseRetrofit{
         this.mCacheHttpClient = cacheHttpClient;
     }
 
-    @Override
-    public Retrofit.Builder customer(Retrofit.Builder builder) {
-        builder.addConverterFactory(GsonConverterFactory.create());
-        return builder;
-    }
 
     @Override
     public String getBaseUrl() {

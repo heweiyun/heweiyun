@@ -1,4 +1,4 @@
-package com.hwy.data.net.client;
+package com.hwy.data.net.client.core;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;

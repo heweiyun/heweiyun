@@ -1,6 +1,7 @@
 package com.hwy.ui.base;
 
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
@@ -34,6 +35,7 @@ public abstract class BaseActivity<C>  extends AppCompatActivity implements GetC
         initEvents();
     }
 
+    @LayoutRes
     protected abstract int getContentResId();
 
     /**

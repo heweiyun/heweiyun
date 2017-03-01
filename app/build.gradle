@@ -28,6 +28,8 @@ dependencies {
 
     compile 'com.android.support:design:24.2.1'
 
+//    compile project(':baselibrary')
+
     ////dagger2////
     final DAGGER_VERSION = '2.5'
     compile "com.google.dagger:dagger:$DAGGER_VERSION"
@@ -107,5 +109,9 @@ dependencies {
 
     //https://github.com/tbruyelle/RxPermissions
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.0@aar'
+
+    //https://github.com/airbnb/epoxy
+    compile 'com.airbnb.android:epoxy:1.5.0'
+    apt 'com.airbnb.android:epoxy-processor:1.5.0'
 
 }

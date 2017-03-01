@@ -89,6 +89,7 @@ public class ZhiHuFragment extends BaseFragment implements IZhiHuView{
                 mZhiHuPresent.getTheDaily();
             }
         });
+
         mRecyclerView.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
